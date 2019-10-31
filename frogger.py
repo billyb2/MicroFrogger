@@ -2,8 +2,8 @@
 from microbit import *
 
 #gotta set variables outside of loop
-x = 0;
-y = 0;
+x = 2;
+y = 2;
 
 clear = Image(  "00000:"
                 "00000:"
@@ -22,7 +22,7 @@ while True:
     sleep(100)
 
 
-    #250 seems like a decent sensitivity, button controlls are easier though
+    #300 seems like a decent sensitivity, button controlls are easier though
     
     if xAccel > 300:
         if x < 4:
@@ -31,6 +31,15 @@ while True:
     elif xAccel < -300:
         if x > 0:
             x -= 1
+            
+    #the only real way to move forward and backwards 
+    if yAccel > 300:
+        if y < 4:
+            y += 1
+    
+    elif yAccel < -300:
+        if y > 0:
+            y -= 1
             
             
 
@@ -45,6 +54,7 @@ while True:
         if x < 4:
             x += 1
     
+    #clears the screen before showing showing the pixels
     display.show(clear)
     display.set_pixel(x, y, 9)
     
