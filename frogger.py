@@ -1,15 +1,24 @@
 # Add your Python code here. E.g.
 from microbit import *
+import math
 
 #gotta set variables outside of loop
 x = 2;
-y = 2;
+y = 4;
 
 clear = Image(  "00000:"
                 "00000:"
                 "00000:"
                 "00000:"
                 "00000")
+                
+class Car:
+    def __init__(self, x, y, speed):
+        self.x = x
+        self.y = y
+        self.speed = speed
+        
+car = Car(1, 1, 0.5)
                 
                 
 #run on a forever loop
@@ -38,8 +47,9 @@ while True:
             y += 1
     
     elif yAccel < -300:
-        if y > 0:
-            y -= 1
+        y -= 1
+        if y < 0:
+            y = 4
             
             
 
@@ -53,9 +63,16 @@ while True:
         #vice versa
         if x < 4:
             x += 1
-    
-    #clears the screen before showing showing the pixels
+
     display.show(clear)
     display.set_pixel(x, y, 9)
+    display.set_pixel(math.ceil(car.x), car.y, 4)
     
+    car.x += car.speed;
+
+    if car.x < 0:
+        car.x = 4
+    elif car.x > 4:
+        car.x = 0
+
     
