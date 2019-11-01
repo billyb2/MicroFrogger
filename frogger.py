@@ -75,4 +75,7 @@ while True:
     elif car.x > 4:
         car.x = 0
 
+    if car.x == x & car.y == y:
+        display.scroll("GAME OVER")
+    
     
