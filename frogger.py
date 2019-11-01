@@ -2,8 +2,7 @@
 from microbit import *
 import math
 import radio
-
-status = "in game"
+import random
 
 #gotta set variables outside of loop
 x = 2;
@@ -23,11 +22,11 @@ class Car:
         self.y = y
         self.speed = speed
         
-car = Car(1, 1, 0.5)
+car = Car(0, random.randint(0,3), 0.3)
                 
                 
 #run on a forever loop
-while (status == "in game"):
+while True:
     
     #how far the microbit is leaning left or right
     xAccel = accelerometer.get_x()
@@ -38,20 +37,20 @@ while (status == "in game"):
 
     #300 seems like a decent sensitivity, button controlls are easier though
     
-    if xAccel > 300:
+    if xAccel > 350:
         if x < 4:
             x += 1
     
-    elif xAccel < -300:
+    elif xAccel < -350:
         if x > 0:
             x -= 1
             
     #the only real way to move forward and backwards 
-    if yAccel > 300:
+    if yAccel > 350:
         if y < 4:
             y += 1
     
-    elif yAccel < -300:
+    elif yAccel < -350:
         y -= 1
         if y < 0:
             y = 4
@@ -62,19 +61,33 @@ while (status == "in game"):
     #Button controls
     if button_a.is_pressed():
         #if a is pressed, and the x isn't offscreen, move left
-        if x > 0:
-            x -= 1
-
+        if y > 0:
+            y -= 1
+        print(y)
+        print("car:" + str(car.y))
     elif button_b.is_pressed():
         #vice versa
-        if x < 4:
-            x += 1
-
+        if y < 4:
+            y += 1
+        print(y)
+        print("car:" + str(car.y))
+        
+    otherPlayerX = radio.receive()
+    otherPlayerX = str(otherPlayerX)
+    # otherPlayerY = int(otherPlayerX)
+    car.x += car.speed;
+    
     display.show(clear)
     display.set_pixel(x, y, 9)
-    display.set_pixel(math.ceil(car.x), car.y, 4)
+    display.set_pixel(math.floor(car.x), math.floor(car.y), 4)
     
-    car.x += car.speed;
+    
+    if math.floor(car.x) == x & car.y == y:
+        print(x)
+        print("car" + str(math.floor(car.x)))
+        display.scroll("GAME OVER")
+        display.scroll("A to play again")
+
 
     if car.x < 0:
         car.x = 4
@@ -82,18 +95,5 @@ while (status == "in game"):
         car.x = 0
         
         
-    otherPlayerX = radio.receive()
-    otherPlayerX = str(otherPlayerX)
-    print(otherPlayerX)
-    otherPlayerY = int(otherPlayerX)
 
-        
-
-
-if car.x == x & car.y == y:
-     display.scroll("GAME OVER")
-     display.scroll("Do you want to play again?")
-     display.scroll("Enter a for yes and b for no")
-     if button_b.is_pressed():
-            status = "end game"
             
