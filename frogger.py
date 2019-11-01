@@ -35,13 +35,13 @@ while (status == "in game"):
     
     sleep(100)
 
+    radio.send(str(x))
 
     #300 seems like a decent sensitivity, button controlls are easier though
     
     if xAccel > 300:
         if x < 4:
             x += 1
-            radio.send(x)
     
     elif xAccel < -300:
         if x > 0:
@@ -81,8 +81,12 @@ while (status == "in game"):
     elif car.x > 4:
         car.x = 0
         
-    display.scroll(radio.receive)
         
+    otherPlayerX = int(radio.receive())
+    
+    display.set_pixel(otherPlayerX, 2, 9)
+        
+
         
 
 
