@@ -2,6 +2,8 @@
 from microbit import *
 import math
 
+status = "in game"
+
 #gotta set variables outside of loop
 x = 2;
 y = 4;
@@ -25,7 +27,7 @@ car = Car(1, 1, 0.5)
                 
                 
 #run on a forever loop
-while True:
+while (status == "in game"):
     
     #how far the microbit is leaning left or right
     xAccel = accelerometer.get_x()
@@ -84,5 +86,8 @@ while True:
     #Doesn't actually end the game
     if car.x == x & car.y == y:
         display.scroll("GAME OVER")
-    
+        display.scroll("Do you want to play again?")
+        display.scroll("Enter a for yes and b for no)
+        if (button_b.is_pressed):
+            status = "end game"
     
