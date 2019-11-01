@@ -35,7 +35,6 @@ while (status == "in game"):
     
     sleep(100)
 
-    radio.send(str(x))
 
     #300 seems like a decent sensitivity, button controlls are easier though
     
@@ -57,7 +56,8 @@ while (status == "in game"):
         if y < 0:
             y = 4
             
-            
+    radio.send(str(x))
+
 
     #Button controls
     if button_a.is_pressed():
@@ -82,10 +82,10 @@ while (status == "in game"):
         car.x = 0
         
         
-    otherPlayerX = int(radio.receive())
-    
-    display.set_pixel(otherPlayerX, 2, 9)
-        
+    otherPlayerX = radio.receive()
+    otherPlayerX = str(otherPlayerX)
+    print(otherPlayerX)
+    otherPlayerY = int(otherPlayerX)
 
         
 
