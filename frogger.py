@@ -1,12 +1,15 @@
 # Add your Python code here. E.g.
 from microbit import *
 import math
+import radio
 
 status = "in game"
 
 #gotta set variables outside of loop
 x = 2;
 y = 4;
+
+radio.on()
 
 clear = Image(  "00000:"
                 "00000:"
@@ -38,6 +41,7 @@ while (status == "in game"):
     if xAccel > 300:
         if x < 4:
             x += 1
+            radio.send(x)
     
     elif xAccel < -300:
         if x > 0:
@@ -76,6 +80,11 @@ while (status == "in game"):
         car.x = 4
     elif car.x > 4:
         car.x = 0
+        
+    display.scroll(radio.receive)
+        
+        
+
 
 if car.x == x & car.y == y:
      display.scroll("GAME OVER")
