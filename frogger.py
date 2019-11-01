@@ -82,7 +82,7 @@ while True:
     display.set_pixel(math.floor(car.x), math.floor(car.y), 4)
     
     
-    if math.floor(car.x) == x & car.y == y:
+    if math.floor(car.x) == x and car.y == y:
         print(x)
         print("car" + str(math.floor(car.x)))
         display.scroll("GAME OVER")
