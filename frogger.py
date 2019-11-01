@@ -8,15 +8,12 @@ status = "in game"
 x = 2;
 y = 4;
 
-
-#Just a blank screen, sets every pixel to 0 brightness
 clear = Image(  "00000:"
                 "00000:"
                 "00000:"
                 "00000:"
                 "00000")
                 
-#This makes it easier to create multiple cars without having to redefine it every time
 class Car:
     def __init__(self, x, y, speed):
         self.x = x
@@ -33,7 +30,6 @@ while (status == "in game"):
     xAccel = accelerometer.get_x()
     yAccel = accelerometer.get_y()
     
-    #Just makes the acceleratometer a little less sensitive, waits 100 ms
     sleep(100)
 
 
@@ -70,10 +66,8 @@ while (status == "in game"):
         if x < 4:
             x += 1
 
-    #draws all objects
     display.show(clear)
     display.set_pixel(x, y, 9)
-    #have to use ceil to round up the cars x, in case it's like 1.5 or something
     display.set_pixel(math.ceil(car.x), car.y, 4)
     
     car.x += car.speed;
@@ -83,11 +77,10 @@ while (status == "in game"):
     elif car.x > 4:
         car.x = 0
 
-    #Doesn't actually end the game
-    if car.x == x & car.y == y:
-        display.scroll("GAME OVER")
-        display.scroll("Do you want to play again?")
-        display.scroll("Enter a for yes and b for no)
-        if (button_b.is_pressed):
+if car.x == x & car.y == y:
+     display.scroll("GAME OVER")
+     display.scroll("Do you want to play again?")
+     display.scroll("Enter a for yes and b for no")
+     if button_b.is_pressed():
             status = "end game"
-    
+            
