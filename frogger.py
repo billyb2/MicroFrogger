@@ -52,8 +52,6 @@ while True:
     
     elif yAccel < -350:
         y -= 1
-        if y < 0:
-            y = 4
             
     radio.send(str(x))
 
@@ -61,8 +59,7 @@ while True:
     #Button controls
     if button_a.is_pressed():
         #if a is pressed, and the x isn't offscreen, move left
-        if y > 0:
-            y -= 1
+        y -= 1
         print(y)
         print("car:" + str(car.y))
     elif button_b.is_pressed():
@@ -75,6 +72,10 @@ while True:
     otherPlayerX = radio.receive()
     otherPlayerX = str(otherPlayerX)
     # otherPlayerY = int(otherPlayerX)
+    
+    if y < 0:
+        y = 4
+    
     car.x += car.speed;
     
     display.show(clear)
