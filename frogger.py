@@ -11,7 +11,6 @@ y = 4
 
 level = 0
 
-radio.on()
 
 clear = Image(  "00000:"
                 "00000:"
@@ -30,6 +29,9 @@ car2 = Car()
 car3 = Car()
 car4 = Car()
 mode = False
+
+startedRadio = False
+
 
 display.show("1 or 2P")
 
@@ -149,4 +151,25 @@ while True:
         elif car4.x > 4:
             car4.x = 0
     
-
+    elif mode == "2p":
+        radio.on()
+        display.scroll("Synchronize Microbits")
+        if button_a.is_pressed():
+            startedRadio = True
+            
+        if startedRadio == True:
+            #225 seems like the optimal number of ms to wait without sacrificing speed, 250 seems to be much more stable though. Should experiment more
+            #Counts the number of null bytes, since the byte encoder sends numbers as a certain number of null bytes
+            p2coors = radio.receive()
+            radio.send(str(x) + "," + str(y))
+            
+            p2x = int(p2coors[0])
+            p2y = int(p2coors[2])
+            
+            
+            
+            
+            
+            
+            
+            
