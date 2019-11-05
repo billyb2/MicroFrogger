@@ -35,7 +35,6 @@ display.show("1 or 2P")
 
 
 while mode == False:
-    print(mode)
     if button_a.is_pressed():
         display.scroll("3 2 1 go!")
         mode = "1p"
@@ -95,23 +94,38 @@ while True:
         
         display.show(clear)
         display.set_pixel(x, y, 9)
-        display.set_pixel(math.floor(car.x), math.floor(car.y), 4)
+        display.set_pixel(round(car.x), round(car.y), 4)
         
         
-        if math.floor(car.x) == x and car.y == y:
-            print(x)
-            print("car" + str(math.floor(car.x)))
+        if round(car.x) == x and car.y == y:
+
             display.scroll("GAME OVER")
             display.scroll("A to play again")
                     
-        if level >= 1:
+        if level >= 3:
             #ima just have all the cars move at the speed of the og car for now
             car2.x += car.speed
-            display.set_pixel(math.floor(car2.x), math.floor(car2.y), 4)
+            display.set_pixel(round(car2.x), round(car2.y), 4)
                 
-            if math.floor(car2.x) == x and car2.y == y:
+            if round(car2.x) == x and car2.y == y:
                 display.scroll("GAME OVER")
-                display.scroll("A to play again")    
+                display.scroll("A to play again")  
+            #I'll nest the if statements to save ram (like this graphical intense needs)
+            if level >= 6:
+                car3.x += car.speed
+                display.set_pixel(round(car3.x), round(car3.y), 4)
+                    
+                if round(car3.x) == x and car3.y == y:
+                    display.scroll("GAME OVER")
+                    display.scroll("A to play again")  
+                
+                if level >= 9:
+                    car4.x += car.speed
+                    display.set_pixel(round(car4.x), round(car4.y), 4)
+                        
+                    if round(car4.x) == x and car4.y == y:
+                        display.scroll("GAME OVER")
+                        display.scroll("A to play again")
 
     
     
