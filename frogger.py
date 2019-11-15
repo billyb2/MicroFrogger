@@ -41,7 +41,6 @@ while mode == False:
         display.scroll("3 2 1 go!")
         mode = "1p"
     elif button_b.is_pressed():
-        display.scroll("3 2 1 go!")
         mode = "2p"
                 
 #run on a forever loop
@@ -153,7 +152,6 @@ while True:
     
     elif mode == "2p":
         radio.on()
-        display.scroll("Synchronize Microbits")
         if button_a.is_pressed():
             startedRadio = True
             
@@ -162,14 +160,4 @@ while True:
             #Counts the number of null bytes, since the byte encoder sends numbers as a certain number of null bytes
             p2coors = radio.receive()
             radio.send(str(x) + "," + str(y))
-            
-            p2x = int(p2coors[0])
-            p2y = int(p2coors[2])
-            
-            
-            
-            
-            
-            
-            
-            
+            print(p2coors)
