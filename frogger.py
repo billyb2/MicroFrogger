@@ -4,6 +4,7 @@ import math
 import radio
 import random
 
+radio.on()
 
 #gotta set variables outside of loop
 x = 2
@@ -161,3 +162,7 @@ while True:
             p2coors = radio.receive()
             radio.send(str(x) + "," + str(y))
             print(p2coors)
+    while True:
+        radio.send("255")
+        i = int(str(radio.receive())[0])
+        display.set_pixel(i, 2, 2)
