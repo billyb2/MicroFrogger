@@ -1,12 +1,9 @@
 from microbit import *
 import radio
-import random
 
 radio.on()
-def get_message():
-    while True:
-        radio.send_bytes(bytes(32))
-        if button_a.was_pressed():
-            radio.send("hello")
-            data = radio.recieve()
-get_message()
+
+while True:
+    radio.send("255")
+    i = int(str(radio.receive())[0])
+    display.set_pixel(i, 2, 2)
