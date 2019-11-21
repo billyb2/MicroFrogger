@@ -10,7 +10,11 @@ radio.on()
 x = 2
 y = 4
 
+x2 = 4
+y2 = 4
 level = 0
+
+determiningWinner = False
 
 
 clear = Image(  "00000:"
@@ -43,35 +47,51 @@ while mode == False:
         mode = "1p"
     elif button_b.is_pressed():
         mode = "2p"
+
+        
+        
+        
+        
+        
+        
+
+                
+
+            
+            
+            
+            
+            
+            
+
                 
 #run on a forever loop
 while True:
-
-    #how far the microbit is leaning left or right
-    xAccel = accelerometer.get_x()
-    yAccel = accelerometer.get_y()
-    
-    sleep(100)
-
     if mode == "1p":
-        #300 seems like a decent sensitivity, button controlls are easier though
-        
+        #movement
+            
+        #how far the microbit is leaning left or right
+        xAccel = accelerometer.get_x()
+        yAccel = accelerometer.get_y()
+                            
         if xAccel > 350:
             if x < 4:
                 x += 1
-        
+                        
         elif xAccel < -350:
             if x > 0:
                 x -= 1
-                
+                            
         #the only real way to move forward and backwards 
-        '''   if yAccel > 350:
+        '''   
+        if yAccel > 350:
             if y < 4:
                 y += 1
-        
-        elif yAccel < -350:
-            y -= 1
-        '''         
+                    
+            elif yAccel < -350:
+                y -= 1
+        '''    
+                
         #Button controls
         if button_a.is_pressed():
             #if a is pressed, and the x isn't offscreen, move left
@@ -80,7 +100,20 @@ while True:
             #vice versa
             if y < 4:
                 y += 1
-    
+                    
+            
+        
+        
+        #300 seems like a decent sensitivity, button controlls are easier though
+                
+        if xAccel > 350:
+            if x < 4:
+                x += 1
+                
+        elif xAccel < -350:
+            if x > 0:
+                x -= 1
+        
         
         if y < 0:
             y = 4
@@ -152,17 +185,79 @@ while True:
             car4.x = 0
     
     elif mode == "2p":
+        
+        
         radio.on()
-        if button_a.is_pressed():
-            startedRadio = True
+        while True:
+            sleep(100)
             
-        if startedRadio == True:
-            #225 seems like the optimal number of ms to wait without sacrificing speed, 250 seems to be much more stable though. Should experiment more
-            #Counts the number of null bytes, since the byte encoder sends numbers as a certain number of null bytes
-            p2coors = radio.receive()
-            radio.send(str(x) + "," + str(y))
-            print(p2coors)
-    while True:
-        radio.send("255")
-        i = int(str(radio.receive())[0])
-        display.set_pixel(i, 2, 2)
+            #movement
+            
+            #how far the microbit is leaning left or right
+            xAccel = accelerometer.get_x()
+            yAccel = accelerometer.get_y()
+                            
+            if xAccel > 350:
+                if x < 4:
+                    x += 1
+                        
+            elif xAccel < -350:
+                if x > 0:
+                    x -= 1
+                            
+            #the only real way to move forward and backwards 
+            '''   
+            if yAccel > 350:
+                if y < 4:
+                    y += 1
+                    
+                elif yAccel < -350:
+                    y -= 1
+            '''    
+                
+            #Button controls
+            if button_a.is_pressed():
+                #if a is pressed, and the x isn't offscreen, move left
+                if y > 0:
+                    y -= 1
+            elif button_b.is_pressed():
+                #vice versa
+                if y < 4:
+                    y += 1
+                    
+            
+            def winner():
+                if y == 0 or y2 == 0:
+                    time = running_time()
+
+                    if determiningWinner == False:
+                        determiningWinner = True
+                        targetTime = time + 5000
+                        
+                    
+                    
+                        
+
+            if y == 0 or y2 == 0:
+                winner()
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            radio.send(str(x) + str(y))
+            radioData = radio.receive()
+            
+            
+            if radioData != None:
+                x2 = str(radioData)[0]
+                y2 = str(radioData)[1]
+                print(radioData)
+                
+            display.show(clear)
+            display.set_pixel(x, y, 9)
+            display.set_pixel(int(x2), int(y2), 9)
