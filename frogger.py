@@ -15,6 +15,8 @@ y2 = 4
 level = 0
 runOnce = 0
 
+targetTime = "null"
+
 determiningWinner = False
 
 
@@ -30,6 +32,9 @@ class Car:
         self.y = random.randint(0,3)
         self.speed = 0.3
         
+        
+connected = False
+
 car = Car()
 car2 = Car()
 car3 = Car()
@@ -195,47 +200,45 @@ while True:
             
             #movement
             
-            #how far the microbit is leaning left or right
-            xAccel = accelerometer.get_x()
-            yAccel = accelerometer.get_y()
-                            
-            if xAccel > 350:
-                if x < 4:
-                    x += 1
-                        
-            elif xAccel < -350:
-                if x > 0:
-                    x -= 1
-                            
-            #the only real way to move forward and backwards 
-            '''   
-            if yAccel > 350:
-                if y < 4:
-                    y += 1
-                    
-                elif yAccel < -350:
-                    y -= 1
-            '''    
-                
-            #Button controls
-            if button_a.is_pressed():
-                #if a is pressed, and the x isn't offscreen, move left
-                if y > 0:
-                    y -= 1
-            elif button_b.is_pressed():
-                #vice versa
-                if y < 4:
-                    y += 1
-                    
             
-            def winner():
-                if y == 0 or y2 == 0:
-                    time = running_time()
-
-                    if determiningWinner == False:
-                        determiningWinner = True
-                        targetTime = time + 5000
+            
+            
+            if connected == True:
+                #how far the microbit is leaning left or right
+                xAccel = accelerometer.get_x()
+                yAccel = accelerometer.get_y()
+                                
+                if xAccel > 350:
+                    if x < 4:
+                        x += 1
+                            
+                elif xAccel < -350:
+                    if x > 0:
+                        x -= 1
+                                
+                #the only real way to move forward and backwards 
+                '''   
+                if yAccel > 350:
+                    if y < 4:
+                        y += 1
                         
+                    elif yAccel < -350:
+                        y -= 1
+                '''    
+                    
+                #Button controls
+                if button_a.is_pressed():
+                    #if a is pressed, and the x isn't offscreen, move left
+                    if y > 0:
+                        y -= 1
+                elif button_b.is_pressed():
+                    #vice versa
+                    if y < 4:
+                        y += 1
+                        
+            
+
+
                     
                     
                 
@@ -248,14 +251,16 @@ while True:
     
                 if time >= targetTime:
                     if y == 0 and y2 != 0:
+                        runOnce = 0
                         print("Player 1 wins!")
                                         
                     elif y != 0 and y2 == 0:
+                        runOnce = 0
                         print("Player 2 wins!")
                                         
                     elif y == 0 and y2 == 0:
                         y = 4
-                        y2 = 4
+                        runOnce = 0
                         print('test')
                         level += 1
             
@@ -265,13 +270,27 @@ while True:
             
             
             
+            #HOST RADIO SENDING ONLY
+            #Sends the players x and y coors, the car coors (if applicable)
+            #the level, and win state. 6 meaning that player 1 won, 7 meaning player 2 won,  8 meaning no win state yet
+            #and 5 - 1 being the amount of time that the player who isn't winning has before the game ends
+            #it then sends the state of the player, 0 meaning alive and 1 being dead
+            #just sends a 5 as the x or y coor. if the car isn't used yet
+            winState = 8
+            if targetTime == "null":
+                winState = 8
+            elif targetTime > 0:
+                winState = Math.round((running_time() - targetTime)/1000)
+                print(winState)
             
+            print(targetTime)
             
-            radio.send(str(x) + str(y))
+            radio.send(str(x) + str(y) + str(5) + str(5)+ str(5) + str(5)+ str(5) + str(5) + str(level))
             radioData = radio.receive()
             
             
             if radioData != None:
+                connected = True
                 x2 = int(str(radioData)[0])
                 y2 = int(str(radioData)[1])
                 print(radioData)
