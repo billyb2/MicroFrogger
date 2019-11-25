@@ -4,21 +4,16 @@ import math
 import radio
 import random
 
-radio.on()
 
 #gotta set variables outside of loop
 x = 2
 y = 4
-
-x2 = 4
+x2 = 2
 y2 = 4
+
 level = 0
-runOnce = 0
 
-targetTime = "null"
-
-determiningWinner = False
-
+radio.on()
 
 clear = Image(  "00000:"
                 "00000:"
@@ -32,72 +27,52 @@ class Car:
         self.y = random.randint(0,3)
         self.speed = 0.3
         
-        
-connected = False
-
 car = Car()
 car2 = Car()
 car3 = Car()
 car4 = Car()
 mode = False
 
-startedRadio = False
-
-
 display.show("1 or 2P")
 
 
 while mode == False:
+    print(mode)
     if button_a.is_pressed():
         display.scroll("3 2 1 go!")
         mode = "1p"
     elif button_b.is_pressed():
+        display.scroll("3 2 1 go!")
         mode = "2p"
-
-        
-        
-        
-        
-        
-        
-
-                
-
-            
-            
-            
-            
-            
-            
-
                 
 #run on a forever loop
 while True:
+
+    #how far the microbit is leaning left or right
+    xAccel = accelerometer.get_x()
+    yAccel = accelerometer.get_y()
+    
+    sleep(100)
+
     if mode == "1p":
-        #movement
-            
-        #how far the microbit is leaning left or right
-        xAccel = accelerometer.get_x()
-        yAccel = accelerometer.get_y()
-                            
+        #300 seems like a decent sensitivity, button controlls are easier though
+        
         if xAccel > 350:
             if x < 4:
                 x += 1
-                        
+        
         elif xAccel < -350:
             if x > 0:
                 x -= 1
-                            
+                
         #the only real way to move forward and backwards 
-        '''   
-        if yAccel > 350:
+        '''   if yAccel > 350:
             if y < 4:
                 y += 1
-                    
-            elif yAccel < -350:
-                y -= 1
-        '''    
-                
+        
+        elif yAccel < -350:
+            y -= 1
+        '''         
         #Button controls
         if button_a.is_pressed():
             #if a is pressed, and the x isn't offscreen, move left
@@ -106,20 +81,7 @@ while True:
             #vice versa
             if y < 4:
                 y += 1
-                    
-            
-        
-        
-        #300 seems like a decent sensitivity, button controlls are easier though
-                
-        if xAccel > 350:
-            if x < 4:
-                x += 1
-                
-        elif xAccel < -350:
-            if x > 0:
-                x -= 1
-        
+    
         
         if y < 0:
             y = 4
@@ -135,38 +97,23 @@ while True:
         
         display.show(clear)
         display.set_pixel(x, y, 9)
-        display.set_pixel(round(car.x), round(car.y), 4)
+        display.set_pixel(math.floor(car.x), math.floor(car.y), 4)
         
         
-        if round(car.x) == x and car.y == y:
-
+        if math.floor(car.x) == x and car.y == y:
+            print(x)
+            print("car" + str(math.floor(car.x)))
             display.scroll("GAME OVER")
             display.scroll("A to play again")
                     
-        if level >= 3:
+        if level >= 1:
             #ima just have all the cars move at the speed of the og car for now
             car2.x += car.speed
-            display.set_pixel(round(car2.x), round(car2.y), 4)
+            display.set_pixel(math.floor(car2.x), math.floor(car2.y), 4)
                 
-            if round(car2.x) == x and car2.y == y:
+            if math.floor(car2.x) == x and car2.y == y:
                 display.scroll("GAME OVER")
-                display.scroll("A to play again")  
-            #I'll nest the if statements to save ram (like this graphical intense needs)
-            if level >= 6:
-                car3.x += car.speed
-                display.set_pixel(round(car3.x), round(car3.y), 4)
-                    
-                if round(car3.x) == x and car3.y == y:
-                    display.scroll("GAME OVER")
-                    display.scroll("A to play again")  
-                
-                if level >= 9:
-                    car4.x += car.speed
-                    display.set_pixel(round(car4.x), round(car4.y), 4)
-                        
-                    if round(car4.x) == x and car4.y == y:
-                        display.scroll("GAME OVER")
-                        display.scroll("A to play again")
+                display.scroll("A to play again")    
 
     
     
@@ -190,6 +137,7 @@ while True:
         elif car4.x > 4:
             car4.x = 0
     
+
     elif mode == "2p":
         
         radio.on()
@@ -204,9 +152,7 @@ while True:
             
             
             if connected == True:
-                #how far the microbit is leaning left or right
-                xAccel = accelerometer.get_x()
-                yAccel = accelerometer.get_y()
+
                                 
                 if xAccel > 350:
                     if x < 4:
