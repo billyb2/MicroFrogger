@@ -1,95 +1,139 @@
-import sys, pygame, time, serial
+# Add your Python code here. E.g.
+from microbit import *
+import math
+import radio
+import random
 
-pygame.init()
 
-size = width, height = 800, 500
-speed = [1, 1]
-black = 0, 0, 0
-map = [
-        [7, 0, 0, 10, 0],
-        [5, 0, 0, 0, 0],
-        [6, 0, 0, 0, 0],
-        [3, 0, 0, 0, 0],
-        [4, 0, 0 ,0, 0]
+#gotta set variables outside of loop
+x = 2
+y = 4
+x2 = 2
+y2 = 4
 
-]
+connected = False
+runOnce = 0
+targetTime = "null"
 
-#s = serial.Serial(
- #    port='COM11',
-  #  baudrate=115200
- #)
+level = 0
 
-screen = pygame.display.set_mode(size)
+radio.on()
 
-car = pygame.image.load("car1.png")
-car = pygame.transform.scale(car, (50, 50))
-carrect = car.get_rect()
+clear = Image(  "00000:"
+                "00000:"
+                "00000:"
+                "00000:"
+                "00000")
+                
+class Car:
+    def __init__(self):
+        self.x = random.randint(0,4)
+        self.y = random.randint(0,3)
+        self.speed = 0.3
+        
+car = Car()
+car2 = Car()
+car3 = Car()
+car4 = Car()
+mode = False
 
-car2 = pygame.image.load("car2.png")
-car2 = pygame.transform.scale(car2, (50, 50))
-carrect2 = car2.get_rect()
 
-car3 = pygame.image.load("car3.png")
-car3 = pygame.transform.scale(car3, (50, 50))
-carrect3 = car3.get_rect()
+display.scroll("3 2 1 go!")
+mode = "1p"
 
-car4 = pygame.image.load("car4.png")
-car4 = pygame.transform.scale(car4, (50, 50))
-carrect4 = car4.get_rect()
-
-frog = pygame.image.load("frog.png")
-frog = pygame.transform.scale(frog, (50, 50))
-frogrect = frog.get_rect()
-
+                
+#run on a forever loop
 while True:
 
-  #data = open('data.txt', 'r')
-  theData = str(11111111111111111)
 
+    
+    sleep(100)
+
+    if mode == "1p":
+        print(str(x) + str(y) + str(car1.x) + str(car1.y) + str(car2.x) + str(car2.y) + str(car3.x) + str(car3.y) + str(car4.x) + str(car4.y))
         
-  map[int(theData[2])][int(theData[3])] = 7
-  map[int(theData[4])][int(theData[5])] = 3
-  map[int(theData[6])][int(theData[7])] = 4
-  map[int(theData[8])][int(theData[9])] = 5
-  map[int(theData[10])][int(theData[11])] = 6
+        #how far the microbit is leaning left or right
+        xAccel = accelerometer.get_x()
+        yAccel = accelerometer.get_y()
+        #300 seems like a decent sensitivity, button controlls are easier though
+        
+        if xAccel > 350:
+            if x < 4:
+                x += 1
+        
+        elif xAccel < -350:
+            if x > 0:
+                x -= 1
+                
+        #the only real way to move forward and backwards 
+        '''   if yAccel > 350:
+            if y < 4:
+                y += 1
+        
+        elif yAccel < -350:
+            y -= 1
+        '''         
+        #Button controls
+        if button_a.is_pressed():
+            #if a is pressed, and the x isn't offscreen, move left
+            y -= 1
+        elif button_b.is_pressed():
+            #vice versa
+            if y < 4:
+                y += 1
+    
+        
+        if y < 0:
+            y = 4
+            car.speed += 0.05
+            car.y = random.randint(0,3)
+            car2.y = random.randint(0,3)
+            car3.y = random.randint(0,3)
+            car4.y = random.randint(0,3)
+            level += 1
+            
+        
+        car.x += car.speed;
+        
+        display.show(clear)
+        display.set_pixel(x, y, 9)
+        display.set_pixel(math.floor(car.x), math.floor(car.y), 4)
+        
+        
+        if math.floor(car.x) == x and car.y == y:
+            display.scroll("GAME OVER")
+            display.scroll("A to play again")
+                    
+        if level >= 1:
+            #ima just have all the cars move at the speed of the og car for now
+            car2.x += car.speed
+            display.set_pixel(math.floor(car2.x), math.floor(car2.y), 4)
+                
+            if math.floor(car2.x) == x and car2.y == y:
+                display.scroll("GAME OVER")
+                display.scroll("A to play again")    
+
+    
+    
+        if car.x < 0:
+            car.x = 4
+        elif car.x > 4:
+            car.x = 0
+    
+        if car2.x < 0:
+            car2.x = 4
+        elif car2.x > 4:
+            car2.x = 0
+            
+        if car3.x < 0:
+            car3.x = 4
+        elif car3.x > 4:
+            car3.x = 0
+            
+        if car4.x < 0:
+            car4.x = 4
+        elif car4.x > 4:
+            car4.x = 0
+    
 
 
-
-
-  for event in pygame.event.get():
-      if event.type == pygame.QUIT: sys.exit()
-
-
-
-
-
-
-  for x in range(5):
-      for y in range(5):
-          if map[x][y] == 7:
-              frogrect.x = y * 100
-              frogrect.y = x * 100
-
-          elif map[x][y] == 3:
-              carrect.x = y * 100
-              carrect.y = x * 100
-
-          elif map[x][y] == 4:
-              carrect2.x = y * 100
-              carrect2.y = x * 100
-
-          elif map[x][y] == 5:
-              carrect3.x = y * 100
-              carrect3.y = x * 100
-
-          elif map[x][y] == 6:
-              carrect4.x = y * 100
-              carrect4.y = x * 100
-
-  screen.fill(black)
-  screen.blit(frog, frogrect)
-  screen.blit(car, carrect)
-  screen.blit(car2, carrect2)
-  screen.blit(car3, carrect3)
-  screen.blit(car4, carrect4)
-  pygame.display.flip()
