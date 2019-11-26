@@ -10,7 +10,7 @@ map = [
         [0, 0, 4, 0, 0],
         [6, 0, 0, 0, 3],
         [0, 0, 0, 0, 0],
-        [0, 0, 1 ,2, 0]
+        [0, 0, 1 ,0, 0]
 
 ]
 
@@ -44,9 +44,15 @@ frogrect = frog.get_rect()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-
+        
+        
         data = open('data.txt', 'w')
         theData = str(data.read())
+        
+        map[theData[2]][theData[3]] = 1
+        map[theData[4]][theData[5]] = 3
+        map[theData[6]][theData[7]] = 4
+        map[theData[8]][theData[9]] = 5
 
         print(theData[3])
 
