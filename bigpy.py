@@ -6,18 +6,18 @@ size = width, height = 800, 500
 speed = [1, 1]
 black = 0, 0, 0
 map = [
-        [0, 0, 5, 0, 0],
-        [0, 0, 4, 0, 0],
-        [6, 0, 0, 0, 3],
-        [0, 0, 0, 0, 0],
-        [0, 0, 1 ,0, 0]
+        [7, 0, 0, 10, 0],
+        [5, 0, 0, 0, 0],
+        [6, 0, 0, 0, 0],
+        [3, 0, 0, 0, 0],
+        [4, 0, 0 ,0, 0]
 
 ]
 
-s = serial.Serial(
-     port='COM11',
-    baudrate=115200
- )
+#s = serial.Serial(
+ #    port='COM11',
+  #  baudrate=115200
+ #)
 
 screen = pygame.display.set_mode(size)
 
@@ -42,49 +42,54 @@ frog = pygame.transform.scale(frog, (50, 50))
 frogrect = frog.get_rect()
 
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+
+  #data = open('data.txt', 'r')
+  theData = str(11111111111111111)
+
         
-        
-        data = open('data.txt', 'w')
-        theData = str(data.read())
-        
-        map[theData[2]][theData[3]] = 1
-        map[theData[4]][theData[5]] = 3
-        map[theData[6]][theData[7]] = 4
-        map[theData[8]][theData[9]] = 5
-
-        print(theData[3])
+  map[int(theData[2])][int(theData[3])] = 7
+  map[int(theData[4])][int(theData[5])] = 3
+  map[int(theData[6])][int(theData[7])] = 4
+  map[int(theData[8])][int(theData[9])] = 5
+  map[int(theData[10])][int(theData[11])] = 6
 
 
 
 
-    for x in range(5):
-        for y in range(5):
-            if map[x][y] == 1:
-                frogrect.x = y * 160
-                frogrect.y = x * 100
+  for event in pygame.event.get():
+      if event.type == pygame.QUIT: sys.exit()
 
-            elif map[x][y] == 3:
-                carrect.x = y * 160
-                carrect.y = x * 100
 
-            elif map[x][y] == 4:
-                carrect2.x = y * 160
-                carrect2.y = x * 100
 
-            elif map[x][y] == 5:
-                carrect3.x = y * 160
-                carrect3.y = x * 100
 
-            elif map[x][y] == 6:
-                carrect4.x = y * 160
-                carrect4.y = x * 100
 
-    screen.fill(black)
-    screen.blit(frog, frogrect)
-    screen.blit(car, carrect)
-    screen.blit(car2, carrect2)
-    screen.blit(car3, carrect3)
-    screen.blit(car4, carrect4)
-    pygame.display.flip()
+
+  for x in range(5):
+      for y in range(5):
+          if map[x][y] == 7:
+              frogrect.x = y * 100
+              frogrect.y = x * 100
+
+          elif map[x][y] == 3:
+              carrect.x = y * 100
+              carrect.y = x * 100
+
+          elif map[x][y] == 4:
+              carrect2.x = y * 100
+              carrect2.y = x * 100
+
+          elif map[x][y] == 5:
+              carrect3.x = y * 100
+              carrect3.y = x * 100
+
+          elif map[x][y] == 6:
+              carrect4.x = y * 100
+              carrect4.y = x * 100
+
+  screen.fill(black)
+  screen.blit(frog, frogrect)
+  screen.blit(car, carrect)
+  screen.blit(car2, carrect2)
+  screen.blit(car3, carrect3)
+  screen.blit(car4, carrect4)
+  pygame.display.flip()
