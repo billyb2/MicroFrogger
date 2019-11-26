@@ -50,7 +50,7 @@ while True:
     sleep(100)
 
     if mode == "1p":
-        print(str(x) + str(y) + str(car1.x) + str(car1.y) + str(car2.x) + str(car2.y) + str(car3.x) + str(car3.y) + str(car4.x) + str(car4.y))
+        print(str(x) + str(y) + str(car.x) + str(car.y) + str(car2.x) + str(car2.y) + str(car3.x) + str(car3.y) + str(car4.x) + str(car4.y))
         
         #how far the microbit is leaning left or right
         xAccel = accelerometer.get_x()
